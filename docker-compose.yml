@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16
+    restart: always
+    container_name: pg16
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      devops_net: 
+        aliases:
+          - pg16
+
+
+  #pgadmin4
+  pgadmin:
+    image: dpage/pgadmin4:8.8
+    container_name: pgadmin4_container
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "user@kb.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      
+    ports:
+      - 4002:80
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin
+    depends_on:
+      - db
+    networks:
+      devops_net: 
+        aliases:
+          - pgadmin4
+volumes:
+  postgres_data: {}
+  pgadmin_data: {}
+
+networks:
+  devops_net:
+    name: devops_net
+    driver: bridge
+    ipam:
+      driver: default

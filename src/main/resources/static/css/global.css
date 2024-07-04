@@ -1,0 +1,53 @@
+/* body{
+    background: lightgray;
+} */
+
+.gradient-custom {
+    /* fallback for old browsers */
+    /* background: #6a11cb; */
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    /* background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1)); */
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right, #6a11cb, #2575fc)
+    }
+
+body{
+    color:white
+}
+
+.navbar{
+    /* background: linear-gradient(90deg, hsla(269, 85%, 43%, 1) 0%, hsla(0, 87%, 73%, 1) 100
+    %) !important; */
+}
+
+#panel_events{
+    display: flex;
+    flex-wrap: wrap;
+}
+.event-card{
+    width: 18rem;
+    margin: 1rem;
+    box-shadow: 17px 11px 10px -9px rgba(0,0,0,0.75);
+    transition: all .3s;
+}
+.event-card:hover{
+    box-shadow: 17px 19px 10px -6px rgba(0,0,0,0.75);
+    transform: scale(1.1);
+}
+
+.description-card{
+    height: 10rem;
+    padding: 1rem;
+    overflow: auto;
+}
+
+.card{
+    width: 18rem;
+    height: 22rem;
+}
+
+#staticBackdrop{
+    color:black
+}

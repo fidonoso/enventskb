@@ -31,17 +31,13 @@ public class AuthController {
         return "register";
     }
 
-    // @PostMapping("/register")
-    // public String registerUser(@ModelAttribute Users user) {
-    //     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    //     userRepository.save(user);
-    //     return "redirect:/login";
-    // }
+
 
     @PostMapping("/register")
     public String registerUser(@ModelAttribute("user") Users user) {
-        if (user.getUsername() == null || user.getPassword() == null) {
+        if (user.getEmail() == null || user.getPassword() == null || user.getName() == null) {
             // Manejo del error, redirigir a una página de error o mostrar un mensaje
+            
             return "error";
         }
 
@@ -53,8 +49,8 @@ public class AuthController {
         return "redirect:/login";
     }
 
-    @GetMapping("/home")
-    public String home() {
-        return "home";
-    }
+    // @GetMapping("/home")
+    // public String home() {
+    //     return "home";
+    // }
 }

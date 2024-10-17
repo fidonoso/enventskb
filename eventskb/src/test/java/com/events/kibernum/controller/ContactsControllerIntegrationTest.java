@@ -22,6 +22,7 @@ import com.events.kibernum.model.Users;
 import com.events.kibernum.repository.ContactsRepository;
 import com.events.kibernum.repository.UserRepository;
 
+// @TestPropertySource(properties = "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration")
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ContactsControllerIntegrationTest {

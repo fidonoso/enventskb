@@ -4,6 +4,8 @@ package com.events.kibernum.controller;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +25,8 @@ import com.events.kibernum.repository.UserRepository;
 
 @Controller
 public class EventsController {
+
+    private static final Logger logger = LoggerFactory.getLogger(EventsController.class);
 
     @Autowired
     private EventsRepository eventsRepository;
@@ -63,6 +67,7 @@ public class EventsController {
                 event.setUser(user);
                 eventsRepository.save(event);
                 model.addAttribute("event", event);
+                logger.info("Nuevo evento creador {}", title);
                 return "redirect:/events";
         }
         return "redirect:/login";
@@ -87,6 +92,7 @@ public class EventsController {
                 event.setDateTime(LocalDateTime.parse(dateTime));
                 event.setUser(user);
                 eventsRepository.save(event);
+        logger.info("Evento editado {}", event.getTitle());
         model.addAttribute("events", eventsRepository.findAll());
         model.addAttribute("user", user);
         return "events";

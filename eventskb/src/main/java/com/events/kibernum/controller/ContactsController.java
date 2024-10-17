@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,6 +26,9 @@ import com.events.kibernum.repository.UserRepository;
 @RequestMapping("/contacts")
 public class ContactsController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ContactsController.class);
+
+
     @Autowired
     private ContactsRepository contactsRepository;
 
@@ -37,6 +42,7 @@ public class ContactsController {
         if (user.isPresent()) {
             contact.setUser(user.get());
             Contacts savedContact = contactsRepository.save(contact);
+            logger.info("Nuevo contacto creado");
             return ResponseEntity.ok(savedContact);
         } else {
             return ResponseEntity.notFound().build();

@@ -3,6 +3,8 @@ package com.events.kibernum.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -23,6 +25,8 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthController {
+
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -52,7 +56,7 @@ public class AuthController {
     public String registerUser(@ModelAttribute("user") Users user) {
         if (user.getEmail() == null || user.getPassword() == null || user.getName() == null) {
             // Manejo del error, redirigir a una página de error o mostrar un mensaje
-            
+            logger.warn("Intento de registro fallido: información de usuario incompleta.");
             return "error";
         }
 
@@ -60,6 +64,7 @@ public class AuthController {
         
         userRepository.save(user);
 
+        logger.info("Usuario registrado exitosamente: {}", user.getEmail());
         // si el registro sale bien, lo redirecciona a la pagina d elogin
         return "redirect:/login";
     }
@@ -79,6 +84,7 @@ public class AuthController {
         Map<String, String> response = new HashMap<>();
 
         if (user == null) {
+            logger.warn("El usuario no existe");
             response.put("message", "El usuario no existe");
             return response;
         }
@@ -98,7 +104,7 @@ public class AuthController {
         message.setSubject(subject);
         message.setText(text);
         mailSender.send(message);
-
+        logger.info("clic en el siguiente enlace para restablecer tu contraseña");
         response.put("message", "Se ha enviado un enlace de restablecimiento a tu correo electrónico "+ email);
         return response;
     }

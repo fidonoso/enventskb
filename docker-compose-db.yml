@@ -1,0 +1,71 @@
+version: '3.8'
+services:
+  
+  postgres:
+    image: postgres:16
+    # container_name: db_kb
+    env_file:
+      - ./.env 
+    environment:
+      # POSTGRES_USER: "postgres"
+      # POSTGRES_PASSWORD: "e.zNg3T_,A.s~GD9"
+      # POSTGRES_DB: "EventsKb"
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    deploy:
+      mode: replicated
+      replicas: 1
+      restart_policy:
+        condition: on-failure  # Solo reintenta si falla
+        max_attempts: 3        # Número máximo de intentos de reinicio
+    networks:
+      - app-network
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    # container_name: pgadmin4_db_kb
+    # restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "fidonoso@admin.com"
+      PGADMIN_DEFAULT_PASSWORD: "admin"
+      
+    ports:
+      - 4005:80
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - app-network
+    deploy:
+      restart_policy:
+        condition: on-failure
+        max_attempts: 3
+
+networks:
+  app-network:
+    external: true
+
+volumes:
+  pgdata: {}
+  pgadmin_data: {}
+
+# docker network create app-network
+# docker-compose -f docker-compose-db.yml down -v
+# docker-compose -f docker-compose-db.yml up -d --build
+
+## bajar los servicios desplegados en docker swarm
+# docker stack rm dbkb java_stack node_stack elk_stack
+
+# docker stack rm dbkb  # Elimina la pila actual
+# docker stack deploy -c docker-compose-db.yml dbkb  # Vuelve a desplegarla
+
+## ver logs de servicios
+# docker service logs dbkb_postgres
+# docker service logs dbkb_pgadmin
+# docker service logs java_stack_app
+
+# docker service logs elk_stack_elasticsearch
+
+# TF_LOG=DEBUG terraform apply

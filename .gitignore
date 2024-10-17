@@ -1,11 +1,14 @@
 HELP.md
-target/
+eventskb/target/
+eventskb/src/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+nodeMailService/node_modules
 ### env ###
 .env
+nodeMailService/.env
+eventskb/.env
 docker-compose.yml
 archivo-carlos.txt
 micambio.txt

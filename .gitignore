@@ -1,13 +1,15 @@
 HELP.md
 target/
+src/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
 ### env ###
 .env
-
-
+docker-compose.yml
+archivo-carlos.txt
+micambio.txt
 Dockerfile2
 ### data ###
 

@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  node-app: 
+    image: node-mail-service:latest
+    # build:
+    #   context: ./nodeMailService     
+    #   args:
+    #     PORT: ${PORT}           
+    env_file:                      
+      - ./nodeMailService/.env
+    deploy:
+      mode: replicated
+      replicas: 3
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - app-network
+    ports:
+      - "4001:4001"
+networks:
+  app-network:
+    external: true
+
+# docker network rm app-network
+# docker network create app-network
+
+# docker-compose -f docker-compose-node.yml down -v
+# docker-compose -f docker-compose-node.yml up -d --build
+
+# docker service logs node_stack_app
+# docker stack deploy -c docker-compose-node.yml node_stack  # Vuelve a desplegarla
+
+# docker service logs -f node_stack_node-app

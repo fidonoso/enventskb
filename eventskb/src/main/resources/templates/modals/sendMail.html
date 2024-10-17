@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>SendMail Fragment</title>
+  </head>
+  <body>
+    <div th:fragment="sendMail">
+      <div
+        class="offcanvas offcanvas-start"
+        tabindex="-1"
+        id="offcanvasSendMail"
+        aria-labelledby="offcanvasExampleLabel"
+      >
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasSendMailLabel">
+            Invitación
+          </h5>
+          <span class="d-none" id="enventid"></span>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          >
+            X
+          </button>
+        </div>
+        <div class="offcanvas-body">
+          <div>
+            <div class="container-table">
+              <table class="table table-striped table-hover table-dark">
+                <thead>
+                  <tr>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>
+                      <label for="" class="form-check-label"
+                        >Invitar a todos</label
+                      >
+                      <input
+                        type="checkbox"
+                        class="form-check-input ms-2"
+                        id="checkAllFriends"
+                      />
+                    </th>
+                    <th class="d-none" id="idUserOwn" th:text="${user.id}">
+                      IdUser
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="listGuest">
+                  <tr th:each="contact: ${contacts}">
+                    <td th:text="${contact.nombre}"></td>
+
+                    <td th:text="${contact.email}"></td>
+                    <td>
+                      <span class="form-check-label">Enviar invitación</span>
+                      <input type="checkbox" class="form-check-input ms-2" />
+                    </td>
+                    <td class="d-none" th:text="${contact.id}"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="container-btn-addContact mt-2">
+              <button
+                class="btn btn-outline-success"
+                data-bs-toggle="modal"
+                data-bs-target="#modalNewContact"
+              >
+                <i class="fa-solid fa-user-group me-2"></i>Agregar Contacto
+              </button>
+            </div>
+          </div>
+          <div>
+            <div class="form-group mt-3">
+              <label for="subject" class="fs-5 text-secondary">Asunto</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subject"
+                name="subject"
+                required
+              />
+            </div>
+
+            <div class="form-group mt-3">
+              <label for="message" class="fs-5 text-secondary">Mensaje</label>
+              <div
+                id="editor-container"
+                class="form-control"
+                style="height: 230px"
+              ></div>
+            </div>
+
+            <input type="hidden" id="messageInput" name="message" />
+
+            <div class="text-center mt-3">
+              <button id="btnSendGuest" class="btn btn-outline-primary">
+                Enviar invitación
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

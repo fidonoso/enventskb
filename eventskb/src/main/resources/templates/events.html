@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!--Sweetalert2-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.min.css" integrity="sha256-XE4NT4UAtULuSdFWQXaaLSOt0/ZqL5xbX/ObUyf2UTI=" crossorigin="anonymous">
+    <!-- quill -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+    <!--Mis estilos en css/-->
+    <link rel="stylesheet" href="/css/global.css" />
+    <link rel="stylesheet" href="/css/events.css" />
+    <link rel="stylesheet" href="/css/reloj.css" />
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var user = /*[[${user}]]*/ null;
+        var events = /*[[${events}]]*/ [];
+        var contacts = /*[[${contacts}]]*/ [];
+        /*]]>*/
+    </script>
+    <title>Events</title>
+</head>
+<body class="gradient-custom dark">
+  <!--Navbar--> 
+  <div th:insert="~{navbar/navbar :: navbar}"></div>
+    <div class="container-loader" id="containerLoader">
+        <div class="loader"></div>
+    </div>
+    <div class="container-fluid ">
+       <div class="row">
+        <div class="col-12 col-md-3">
+            <!--CAlendario-->
+            <div class="calendar">
+                <!-- CALENDAR HEADER START -->
+                <div class="calendar-header">
+                    <span class="month-picker" id="month-picker">
+                        February
+                    </span>
+                    <div class="year-picker">
+                        <span class="year-change mt-3" id="prev-year">
+                            <pre> < </pre>
+                        </span>
+                        <span id="year">2023</span>
+                        <span class="year-change mt-3" id="next-year">
+                            <pre> > </pre>
+                        </span>
+                    </div>
+        
+        
+                </div>
+        
+                <!-- CALENDAR BODY START -->
+                <div class="calendar-body">
+                    <div class="calendar-week-day">
+                        <div>Dom</div>
+                        <div>Lun</div>
+                        <div>Mar</div>
+                        <div>Mier</div>
+                        <div>Jue</div>
+                        <div>Vie</div>
+                        <div>Sab</div>
+                    </div>
+                    <div class="calendar-day">
+                        <div>
+                            1
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                        <div>1</div>
+                        <div>2</div>
+                        <div>3</div>
+                        <div>4</div>
+                        <div>5</div>
+                        <div>6</div>
+                        <div>7</div>
+                    </div>
+                </div>
+        
+                <!-- CALENDAR FOOTER START -->
+                <div class="calendar-footer">
+                    <div class="toggle">
+                        <span>Dark Mode</span>
+                        <div class="dark-mode-switch">
+                            <div class="dark-mode-switch-ident"></div>
+                        </div>
+                    </div>
+                </div>
+        
+                <div class="month-list"></div>
+            </div>
+        </div>
+        <div class="col-12 col-md-9">
+
+            <div class="p-3">
+
+                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                  Crear nuevo evento
+                </button>
+              </div>
+            
+              <section class="text-center" id="panel_events">
+  
+                  <div th:each="event : ${events}" class="event-card">
+                      <div class="card" >
+                        <div class="d-flex justify-content-evenly align-items-center card-header" onclick="eventDetails(event)">
+                            <h5 class="w-75" th:text="${event.title}">Card title </h5>
+                            <i class="fa-solid fa-eye"></i>
+
+                        </div>
+                          <div class="card-body">
+                              <div class="d-flex align-items-center card-date">
+                                  <i class="fa-regular fa-calendar-check me-3 p-0"></i>
+                                  <h5 class="card-title p-0 mb-0" th:text="${#temporals.format(event.dateTime, 'dd-MMM-yyyy')}">Card title</h5>
+                              </div>
+                              <div class="d-flex align-items-center card-location">
+                                  <i class="fa-solid fa-location-dot me-3 p-0 my-0"></i>
+                                  <h6 class="card-subtitle p-0 mb-0 my-0 location-text" th:text="${event.location}">location</h6>
+                              </div>
+                              <div class="description-card ">
+                                  <p class="card-text" th:text="${event.description}">Descripcion</p>
+  
+                              </div>
+                              <div class="d-flex justify-content-evenly py-2 container-btn-actions" th:if="${event.user.id == user.id}">
+                                  <!--Eventos del propietario (el usuario logueado)-->
+                                  <button class="btn btn-outline-info" 
+                                      th:data-event-id="${event.id}"  
+                                      th:data-user-id="${event.user.id}" 
+                                      th:data-user-logued_id="${user.id}" 
+                                      onclick="handleEventClick(event)" ><i class="fa-solid fa-pen-to-square"></i>
+                                  </button>
+                                  
+                                  <button class="btn btn-outline-primary"
+                                      onclick="handleSetOffCanvas(event)"
+                                      th:data-event-id="${event.id}"  
+                                      th:data-user-id="${event.user.id}" 
+                                      th:data-user-logued_id="${user.id}" 
+                                      data-bs-toggle="offcanvas" data-bs-target="#offcanvasSendMail"
+                                      ><i class="fa-solid fa-paper-plane"></i>
+                                  </button>
+  
+                                  <button class="btn btn-outline-danger"
+                                      th:data-event-id="${event.id}"  
+                                      th:data-user-id="${event.user.id}" 
+                                      th:data-user-logued_id="${user.id}" 
+                                      onclick="handleDeleteEventClick(event)"
+                                      ><i class="fa-solid fa-trash-can"></i>
+                                  </button>
+  
+                              </div>
+                              <div class="d-flex justify-content-center py-2 container-btn-actions" th:unless="${event.user.id == user.id}">
+                                  <!--Eventos que no son del usuario logueado-->
+                                  <button class="btn btn-outline-info"
+                                  th:data-event-id="${event.id}"  
+                                  th:data-user-id="${event.user.id}" 
+                                  th:data-user-logued_id="${user.id}" 
+                                  onclick="handleRequestParticipation(event)"
+                                  ><i class="fa-solid fa-hand-point-up me-2"></i>Solicitar participar</button>
+      
+                              </div>
+  
+                              <blockquote class="blockquote mb-0 mt-3">
+                                  
+                                  <footer class="blockquote-footer">Creado por <cite title="Source Title" th:text="${event.user.name + ' ' + event.user.last_name}">Source Title</cite></footer>
+                              </blockquote>
+                          </div>
+                      </div>
+                  </div>
+              </section>
+        </div>
+       </div>
+            
+        
+    </div>
+
+      <!--Modal new events--> 
+  <div th:insert="~{events/newEvent :: new_events}"></div>
+  
+  <div th:insert="~{modals/newContact :: newContact}"></div>
+
+  <!--Modal sendMail-->
+  <div th:insert="~{modals/sendMail :: sendMail}"></div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <!-- Include the Quill library -->
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+
+<!--fontawesome-->
+<script src="https://kit.fontawesome.com/000f4fc413.js" crossorigin="anonymous"></script>
+
+<!--Sweetalert2-->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js" integrity="sha256-bjbo7LFRGeuwaAMW0213gerdtgV83QAy23xMd9zNkbM=" crossorigin="anonymous"></script>
+    <!--Mi script-->
+    <script src="/js/script.js"></script>
+<script src="/js/events.js"></script>
+<script src="/js/reloj.js"></script>
+
+</body>
+</html>

@@ -23,7 +23,7 @@ public class KibernumApplication {
         System.setProperty("SMTP_PORT", dotenv.get("SMTP_PORT"));
         System.setProperty("MAIL_USERNAME", dotenv.get("MAIL_USERNAME"));
         System.setProperty("MAIL_PASSWORD", dotenv.get("MAIL_PASSWORD"));
-        System.setProperty("email-service.url", dotenv.get("EMAIL_SERVICE_URL"));
+        System.setProperty("email-service.url", dotenv.get("email-service.url"));
 
         // Imprimir valores en consola para verificar
         // System.out.println("SERVER_APPLICATION_PORT: " + dotenv.get("SERVER_APPLICATION_PORT"));

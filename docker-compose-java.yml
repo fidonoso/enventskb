@@ -1,0 +1,56 @@
+version: '3.8'
+services:
+  # nginx:
+  #   image: nginx:latest
+  #   volumes:
+  #     - ./nginx.conf:/etc/nginx/nginx.conf:ro  
+  #   ports:
+  #     - "8080:80"  
+  #   depends_on:
+  #     - java-app
+  #   deploy:
+  #     replicas: 1
+  #   networks:
+  #     - app-network
+
+
+  java-app:
+    image: eventskb-app:latest
+    # build:
+    #   context: ./eventskb                   
+    #   args:
+    #     - SPRING_PROFILES_ACTIVE=prod       
+    env_file:                              
+      - ./eventskb/.env
+    # environment:
+    #   - SERVER_SERVLET_CONTEXT_PATH=/
+    #   - SPRING_PROFILES_ACTIVE=prod
+    #   - SERVER_FORWARD_HEADERS_STRATEGY=FRAMEWORK
+    #   - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_CUSTOM_REDIRECT-URI=http://host.docker.internal:8080/login/
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        parallelism: 1
+        delay: 10s
+      restart_policy:
+        condition: on-failure
+    networks:
+      - app-network
+    # expose:
+    #   - "8082"  
+    ports:
+      - "8080:8082"
+      # - "8080:${SERVER_APPLICATION_PORT}"
+networks:
+  app-network:
+    external: true
+
+
+# docker network rm app-network
+# docker network create app-network
+
+# docker-compose -f docker-compose-java.yml down -v
+# docker-compose -f docker-compose-java.yml up -d --build
+
+# docker service scale java_stack_java-app=2

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navbar Fragment</title>
+</head>
+<body>
+    <div th:fragment="navbar">
+        <nav class="navbar navbar-expand-lg bg-body-tertiary mb-3">
+            <div class="container-fluid">
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <a class="navbar-brand ms-5" href="#">
+                <img src="/img/logo.png" alt="EventsKB" width="70" height="70">
+              </a>
+              <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+                <ul class="navbar-nav ms-auto  mb-2 mb-lg-0" id="navbar_menu">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" th:href="@{/home}">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" th:href="@{/events}">Eventos</a>
+                  </li>
+                  <li class="nav-item dropdown me-5">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span th:text="${user.email}">Usuario</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" th:href="@{/logout}">Cerrar sesión</a></li>
+                    </ul>
+                  </li>
+                </ul>
+    
+              </div>
+            </div>
+        </nav>
+        <script>
+            const navbar=document.querySelector('#navbar_menu');
+            const navItems = navbar.querySelectorAll('.nav-item:not(.dropdown) a');
+            const ruta = location.pathname;
+            navItems.forEach(el=>{
+                if(el.getAttribute('href')===ruta){
+                    el.classList.add('active');
+                }else{
+                    el.classList.remove('active');
+                }
+            })
+        </script>
+    </div>
+</body>
+</html>

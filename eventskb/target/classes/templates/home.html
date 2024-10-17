@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <!--Sweetalert2-->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.min.css"
+      integrity="sha256-XE4NT4UAtULuSdFWQXaaLSOt0/ZqL5xbX/ObUyf2UTI="
+      crossorigin="anonymous"
+    />
+    <!--Mis estilos en css/-->
+    <link rel="stylesheet" href="/css/global.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script th:inline="javascript">
+      /*<![CDATA[*/
+      var user = /*[[${user}]]*/ null;
+      var events = /*[[${events}]]*/ [];
+      var contacts = /*[[${contacts}]]*/ [];
+      /*]]>*/
+    </script>
+    <title>Home</title>
+  </head>
+  <body class="gradient-custom">
+    <div th:insert="~{navbar/navbar :: navbar}"></div>
+    <div class="container-loader" id="containerLoader">
+      <div class="loader"></div>
+    </div>
+
+    <div class="mx-4">
+      <div class="row">
+        <div class="col-12 col-lg-6">
+          <section class="mt-0" id="section-canvas">
+            <div class="row">
+              <div class="col-12">
+                <div
+                  class="mx-auto my-3 container-graph"
+                  style="margin: 20px 31px !important"
+                >
+                  <canvas id="myChart"></canvas>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div style="width: 400px" class="mx-auto container-graph">
+                  <canvas id="guestCountChart"></canvas>
+                </div>
+              </div>
+              <div class="col-12 col-lg-6">
+                <div style="width: 400px" class="mx-auto container-graph">
+                  <canvas id="userEventsChart"></canvas>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div>
+            <div class="row mx-auto">
+              <div class="col-12">
+                <div class="card-presentacion shadow-lg border-0 rounded-lg">
+                  <div class="card-body text-center">
+                    <h1 class="card-title mb-4 display-4 text-primary fw-bold">
+                      ¡Bienvenido a <span class="text-success">EventsKB</span>!
+                    </h1>
+                    <p class="lead mb-4">
+                      ¿Tienes un evento especial en mente? Ya sea una
+                      <strong>fiesta</strong>, <strong>boda</strong>,
+                      <strong>cumpleaños</strong> o
+                      <strong>despedida de soltero/a</strong>,
+                      <span class="text-success fw-bold">EventKB</span> te ayuda a
+                      organizarlo fácilmente.
+                    </p>
+                    <div class="row">
+                      <div class="col-md-6">
+                        <div class="public-kb">
+                          <img
+                            src="img/fiesta1.jpg"
+                            width="150px"
+                            height="150px"
+                            class="img-fluid rounded-circle mb-3"
+                            alt="Organiza tus eventos"
+                          />
+                          <h3 class="text-primary fw-bold">
+                            Crea y controla tus eventos
+                          </h3>
+                          <p>
+                            Define cada detalle: <strong>fecha</strong>,
+                            <strong>hora</strong>, <strong>lugar</strong>,
+                            <strong>título</strong> y
+                            <strong>descripción</strong> para que todo salga
+                            perfecto.
+                          </p>
+
+                        </div>
+
+                      </div>
+                      <div class="col-md-6">
+                        <div class="public-kb">
+
+                          <img
+                            src="img/fiesta2.jpg"
+                            width="150px"
+                            height="150px"
+                            class="img-fluid rounded-circle mb-3"
+                            alt="Envía invitaciones"
+                          />
+                          <h3 class="text-success fw-bold">
+                            Envía invitaciones a tus contactos
+                          </h3>
+                          <p>
+                            Crea una lista de contactos y envía invitaciones
+                            personalizadas para que tus amigos no se pierdan tu
+                            evento.
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row mt-4">
+                      <div class="col-md-12">
+                        <h3 class="text-warning">
+                          Explora y únete a eventos de otros usuarios
+                        </h3>
+                        <p>
+                          ¿Te gusta lo que ves? ¡Solicita unirte a los eventos
+                          creados por otros usuarios y comparte momentos únicos!
+                        </p>
+                      </div>
+                    </div>
+                    <a href="/events" class="btn btn-lg btn-primary mt-4"
+                      >¡Empieza ahora y crea tu evento!</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div th:insert="~{modals/sendMail :: sendMail}"></div>
+    <div th:insert="~{modals/newContact :: newContact}"></div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <!--fontawesome-->
+    <script
+      src="https://kit.fontawesome.com/000f4fc413.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--Sweetalert2-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/sweetalert2@11.14.3/dist/sweetalert2.all.min.js"
+      integrity="sha256-bjbo7LFRGeuwaAMW0213gerdtgV83QAy23xMd9zNkbM="
+      crossorigin="anonymous"
+    ></script>
+    <!--Mi script-->
+    <script src="/js/home.js"></script>
+  </body>
+</html>

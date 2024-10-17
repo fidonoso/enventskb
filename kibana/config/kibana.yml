@@ -1,0 +1,6 @@
+# Configuración básica
+server.port: 5601
+server.host: "0.0.0.0"  # Escuchar en todas las interfaces
+server.shutdownTimeout: "5s"
+monitoring.ui.container.elasticsearch.enabled: true
+elasticsearch.hosts: ["http://elasticsearch:9200"]  # URL del servidor de Elasticsearch

@@ -35,7 +35,7 @@ services:
     ports:
       - 4005:80
     volumes:
-      - ./pgadmin_data:/var/lib/pgadmin
+      - pgadmin_data:/var/lib/pgadmin
     networks:
       - app-network
     deploy:

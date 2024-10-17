@@ -15,7 +15,7 @@ export const sendEmail=async (req, res) => {
     const senderEmails= await searchEmailSender(sender)
     // console.log('Guests=>',guestData)
     // console.log('sender=>',senderEmails)
-    logger.info(`Correo enviado: ${new Date()}`)
+    
   
 
     try {
@@ -23,15 +23,26 @@ export const sendEmail=async (req, res) => {
         if(result){
         // if(true){
             // const newGuests=await create
+            logger.info("Correo enviado", {
+              logsource: 'node-app',
+              service: 'send-mail',
+            });
             const dataToSave=guestData.map(x=>({...x, event_id:eventId}))
             const nuevosInvitados=await crearInvitados(dataToSave)
-            // console.log('nuevosInvitados=>', nuevosInvitados)
+            logger.info("Nuevos invitados en DB", {
+              logsource: 'node-app',
+              service: 'send-mail',
+            });
             res.status(200).json({status:'ok'});
         }else {
             throw new Error('Email not sent');
         }
     } catch (error) {
-        logger.error(error);
+      logger.error("Error en la conexión", {
+        logsource: 'node-app',
+        service: 'send-mail',
+        error: err.message
+      });
         res.status(500).status({status:'fail'});
     }
 };
@@ -42,13 +53,20 @@ export const requestPracticing=async(req, res)=>{
         // console.log('body=>', req.body)
         const result= await sendMailToGuest(sender, recipients, subject, message);
         if(result){
+          logger.info("Enviada solicitud de participación", {
+            logsource: 'node-app',
+            service: 'request-practicing',
+          });
             res.status(200).json({status:'ok'});
-            logger.info(`Correo enviado - Solicitud de participación: ${new Date()}`)
         }else {
             throw new Error('Email not sent');
         }
     } catch (error) {
-        logger.error(error);
+      logger.error("Error en la conexión", {
+        logsource: 'node-app',
+        service: 'request-practicing',
+        error: err.message
+      });
         res.status(500).status({status:'fail'});
     }
 }
@@ -70,7 +88,12 @@ const searchEmailGuest=async(userId, contactIds)=>{
     
         return emails.map(contact => ({email: contact.email, nombre:contact.nombre})); // Devolver solo los emails en un array
       } catch (error) {
-        console.error("Error al obtener los emails:", error);
+        logger.error("Error al obtener los emails", {
+          logsource: 'node-app',
+          service: 'searchEmailGuest',
+          error: err.message
+        });
+        // console.error("Error al obtener los emails:", error);
         throw error;
       }
 
@@ -92,7 +115,12 @@ const searchEmailSender=async(userId)=>{
           throw new Error("Usuario no encontrado");
         }
       } catch (error) {
-        console.error("Error al obtener el email del usuario:", error);
+        logger.error("Error al obtener el email del usuario", {
+          logsource: 'node-app',
+          service: 'searchEmailSender',
+          error: err.message
+        });
+       
         throw error;
       }
 }
@@ -136,7 +164,11 @@ const crearInvitados=async(invitadosArray)=> {
     //   console.log("Invitados creados exitosamente:", nuevosInvitados);
       return nuevosInvitados;
     } catch (error) {
-      console.error("Error al crear invitados:", error);
+      logger.error("Error al crear invitados", {
+        logsource: 'node-app',
+        service: 'crearInvitados',
+        error: err.message
+      });
       throw error;
     }
   }

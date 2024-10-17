@@ -1,23 +1,31 @@
 import winston from 'winston';
 import LogstashTransport from 'winston-logstash/lib/winston-logstash-latest';
 
-// Configuración de Winston
+const logstashOptions = {
+  port: 5000,
+  // host: 'http://localhost:5000',
+  host: 'elk_stack_logstash',
+  node_name: 'node-app',
+  max_connect_retries: -1, // Intentos infinitos
+  timeout_connect_retries: 5000, // 5 segundos entre intentos
+  ssl_enable: false
+};
+
 export const logger = winston.createLogger({
-    transports: [
-      new LogstashTransport({
-        port: 5000,
-        host: 'elk_stack_logstash',    // Nombre del contenedor de Logstash en la red
-        node_name: 'node-app', // Identificador para los logs de esta aplicación
-        max_connect_retries: 10,
-      })
-    ]
-  });
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new LogstashTransport(logstashOptions)
+  ]
+});
 
-  // Manejo de errores en el transporte
+// Manejo de errores en el transporte
 logger.on('error', function(err) {
-    console.error('Error en el transporte de Logstash:', err);
-  });
+  console.error('Error en el transporte de Logstash:', err);
+});
 
-    // Ejemplo de uso de logging
-logger.info('Aplicación Node.js iniciada');
-logger.error('Error al procesar una solicitud');
+// Ejemplo de uso de logging
+// logger.info('Aplicación Node.js iniciada', { logsource: 'node-app' });
+// logger.error('Error al procesar una solicitud', { logsource: 'node-app' });

@@ -1,0 +1,87 @@
+#offcanvasSendMail{
+    width: 30%;
+}
+
+.container-table{
+    height: 220px;
+    overflow: auto;
+    border: 1px solid #1139ec;
+    position: relative;
+}
+
+.container-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.container-table table thead {
+    position: sticky;
+    top: 0;
+    background-color: white; 
+    z-index: 1; 
+}
+
+.container-table table th, td {
+    padding: 3px 4px !important;
+    border: 1px solid #ddd;
+}
+
+.container-table table tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Color de fondo alterno para filas */
+}
+
+.event-card .card .card-date{
+    height: 30px;
+    /* border: 1px solid black; */
+}
+.event-card .card .card-location{
+    height: 25px;
+    width: 100%;
+    /* border: 1px solid black; */
+}
+
+.location-text {
+    overflow: hidden;              /* Oculta el texto que excede el contenedor */
+    text-overflow: ellipsis;       /* Muestra los puntos suspensivos (...) */
+    white-space: nowrap;           /* Evita que el texto se divida en varias líneas */
+    max-width: 100%;               /* Limita el ancho máximo del texto al 100% del contenedor */
+    vertical-align: middle;        /* Asegura que el texto esté centrado verticalmente */
+    color: #30ff00
+}
+
+/* Opcional: puedes agregar estilos para personalizar el comportamiento al hacer hover */
+.location-text:hover {
+    white-space: nowrap;           /* Permite que el texto se divida en líneas al hacer hover */
+    overflow: visible;             /* Muestra todo el contenido */
+}
+
+.card .card-header{
+    cursor:pointer;
+
+}
+
+.card .fa-eye{
+    color: #30ff00;
+}
+
+.swal2-popup{
+    width: 50%;
+    height: 100%;
+    background: #04060beb;
+    color: coral;
+}
+
+.event-detail-swal{
+    overflow: auto;
+}
+
+.swal2-popup .swal2-actions button.swal2-confirm{
+    background: transparent;
+    border: 1px solid coral;
+    transition: 0.5s ease-in-out;
+}
+.swal2-popup .swal2-actions button.swal2-confirm:hover{
+    background: transparent;
+    border: 1px solid rgb(115, 255, 80);
+    color: rgb(80, 205, 255);
+}
